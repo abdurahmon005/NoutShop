@@ -1,15 +1,18 @@
-﻿using NoutShop.Models;
-using NoutShop.Services;
+﻿using NoutShop.Services; 
+using System;
+using Npgsql;
 using NoutShop.Services.Interfaces;
+using NoutShop.Models;
 
-namespace NoutShop
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
-        {
-            while (true)
-            {
+        //while (true)
+        //{
+        IProductService productService = new ProductService();
+
+        Products products = new Products();
 
             Console.WriteLine("\t\t\t\t\t\t ____________________________________ ");
             Console.WriteLine("\t\t\t\t\t\t|                                    |");
@@ -21,101 +24,81 @@ namespace NoutShop
             Console.WriteLine("|             1.  PRODUCTS           |  \t\t\t\t\t\t  |              2. ORDERS             |");
             Console.WriteLine("|____________________________________|  \t\t\t\t\t\t  |____________________________________|\n\n\n\n\n");
 
-           
+        Console.Write("Qaysi amalni bajarasiz? (1/2) >> ");
+        int num =int.Parse(Console.ReadLine());
 
-                IProductService service = new ProductService();
+        switch (num)
+        {
+            case 1:
+                Console.WriteLine(" ________________________         _________________________       _______________________         ________________________");
+                Console.WriteLine("|                        |       |                         |      |                      |       |                        |");
+                Console.WriteLine("| 1. PRODUCT QO'SHISH    |       | 2. PRODUCTNI YANGILASH  |      | 3. PRODUCT RO'YXATI  |       | 4. PRODUCTNI O'CHIRISH |");
+                Console.WriteLine("|________________________|       |_________________________|      |______________________|       |________________________|\n\n\n");
 
-                Console.Write("(1 and 2) >>> ");
-                int num = int.Parse(Console.ReadLine());
-            
-                switch (num)
+                 
+
+                Console.Write("Qanday amal bajarasiz? (1/2/3/4) >> ");
+                int num1 = int.Parse(Console.ReadLine());
+                switch (num1)
                 {
-                    case 1:
-                        Console.WriteLine(" ____________________________________         ____________________________________      ____________________________________");
-                        Console.WriteLine("|                                    |       |                                    |    |                                    |");
-                        Console.WriteLine("|         1. PRODUCT QO'SHISH        |       |       2. PRODUCTNI YANGILASH       |    |        3. PRODUCTNI O'CHIRISH      |");
-                        Console.WriteLine("|____________________________________|       |____________________________________|    |____________________________________|\n\n\n");
 
-                        Console.WriteLine(" ____________________________________         ____________________________________      ____________________________________");
-                        Console.WriteLine("|                                    |       |                                    |    |                                    |");
-                        Console.WriteLine("|        4. PRODUCT RO'YXATI         |       |        5. NARXNI OZGARTIRISH       |    |           6. GET BY ID             |");
-                        Console.WriteLine("|____________________________________|       |____________________________________|    |____________________________________|\n\n\n\n");
+                    case 1:                                      // product qoshish
 
-                        Console.Write("1 to 6 >>> ");
-                        int num1 = int.Parse(Console.ReadLine());
-                        switch (num1)
+
+                        Console.Write("Nechta mahsulot qoshmoqchisiz ? ");
+                        int count = int.Parse(Console.ReadLine());
+
+                        for (int i = 0; i < count; i++)
                         {
 
-                            case 1:
-                                Products products = new Products();
+                            Console.Write("Product name: ");
+                            string name = Console.ReadLine();
 
-                                Console.Write("Nechta mahsulot qoshmoqchisiz ? ");
-                                int count = int.Parse(Console.ReadLine());
+                            Console.Write("Product price: ");
+                            double price = int.Parse(Console.ReadLine());
 
-                                for (int i = 0; i < count; i++)
-                                {
-                                    Console.Write("Product Id: ");
-                                    int id = int.Parse(Console.ReadLine());
+                            Console.Write("Product category: ");
+                            string category = Console.ReadLine();
 
-                                    Console.Write("Product name: ");
-                                    string name = Console.ReadLine();
+                            {
 
-                                    Console.Write("Product price: ");
-                                    double price = int.Parse(Console.ReadLine());
+                                // products.Id = id;
+                                products.Name = name;
+                                products.Price = price;
+                                products.Category = category;
 
-                                    Console.Write("Product category: ");
-                                    string category = Console.ReadLine();
+                            };
+                            Console.WriteLine();
+                            var result = productService.Create(products);
+                            Console.WriteLine(result);
 
-                                    {
 
-                                        products.Id = id;
-                                        products.Name = name;
-                                        products.Price = price;
-                                        products.Category = category;
-
-                                    };
-                                    Console.WriteLine();
-                                    var result = service.Create(products);
-                                    Console.WriteLine(result);
-
-                                }
-
-                                break;
                         }
 
+                        break;
+                    case 2:                       //productni yangilash
+
 
                         break;
 
-
-                    case 2:
-                        Console.WriteLine(" ____________________________________         ____________________________________      ____________________________________");
-                        Console.WriteLine("|                                    |       |                                    |    |                                    |");
-                        Console.WriteLine("|        1. BUYURTMA BERISH          |       |       2. BUYURTMANI YANGILASH      |    |       3.BUYURTMANI O'CHIRISH       |");
-                        Console.WriteLine("|____________________________________|       |____________________________________|    |____________________________________|\n\n\n");
-
-                        Console.WriteLine(" ____________________________________         ____________________________________      ____________________________________");
-                        Console.WriteLine("|                                    |       |                                    |    |                                    |");
-                        Console.WriteLine("|        4. BUYURTMA RO'YXATI        |       |           5.                       |    |       6.                           |");
-                        Console.WriteLine("|____________________________________|       |____________________________________|    |____________________________________|\n\n\n\n");
-                        break;
                 }
 
-                var product = service.GetAll();
-                foreach (var item in product)
-                {
-                    Console.WriteLine($" ID: {item.Id} \n Name: {item.Name} \n Price: {item.Price}$ \n Category: {item.Category} \n Created data: {item.CreatedTime}");
-                }
 
-                Console.WriteLine("\nDavom etish uchun istalgan tugmani bosing...");
+                break;
 
 
-                Console.ReadKey();
+            case 2:
+                Console.WriteLine(" ________________________         _________________________       _______________________         ________________________");
+                Console.WriteLine("|                        |       |                         |      |                      |       |                        |");
+                Console.WriteLine("| 1. BUYURTMA BERISH     |       | 2.BUYURTMANI YANGILASH  |      | 3.BUYURTMA RO'YXATI  |       | 4.BUYURTMANI O'CHIRISH |");
+                Console.WriteLine("|________________________|       |_________________________|      |______________________|       |________________________|\n\n\n");
 
-                Console.Clear();
 
-            }
-
+                break;
         }
+
+
 
     }
 }
+

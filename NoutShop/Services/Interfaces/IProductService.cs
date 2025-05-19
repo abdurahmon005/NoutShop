@@ -12,7 +12,7 @@ namespace NoutShop.Services.Interfaces
         public string Create(Products products);
         public IEnumerable<Products> GetAll();
          public Products Update(Products products);
-        public Products UpdateproductPrice(Products product);
+        public Products Read(Products product);
         public bool Delete(int idproduct);
         public Products GetByID(int idproduct);
 

@@ -5,66 +5,60 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Npgsql;
 namespace NoutShop.Services
 {
     class ProductService : IProductService
     {
-        public List<Products> Products { get; set; } = new List<Products>();
+       
         public string Create(Products products)
         {
-            Products.Add(products);
+            string connStr = "Host=localhost;Port=5432;Username=postgres;Password=abdurahmon7985;Database=noutshop";
+            using (var conn = new NpgsqlConnection(connStr))
+            {
+                conn.Open();
+                string insertQuery = @"INSERT INTO product 
+                (product_name, product_category, product_price, product_create_time)
+                VALUES (@name, @category, @price, @createdTime)";
 
-            return "product qoshildi";
+                using (var cmd = new NpgsqlCommand(insertQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@name", products.Name);
+                    cmd.Parameters.AddWithValue("@price", products.Price);
+                    cmd.Parameters.AddWithValue("@category", products.Category);
+                    cmd.Parameters.AddWithValue("@createdTime", products.CreatedTime);
+
+                    cmd.ExecuteNonQuery();
+
+                }
+            }
+
+            return "Mahsulot bazaga qo‘shildi";
         }
 
         public bool Delete(int idproduct)
         {
-            var product = Products.FirstOrDefault(x => x.Id == idproduct);
-
-            if (product != null)
-            {
-                Products.Remove(product);
-                return true;
-            }
-            return false;
+            throw new NotImplementedException();
         }
+
         public IEnumerable<Products> GetAll()
         {
-            return Products;
+            throw new NotImplementedException();
         }
 
         public Products GetByID(int idproduct)
         {
-            var products = Products.FirstOrDefault(x => x.Id == idproduct);
-
-            return products;
+            throw new NotImplementedException();
         }
 
         public Products Update(Products products)
         {
-            var data = Products.FirstOrDefault(x => x.Id == products.Id);
-            if (data != null)
-            {
-                data.Name = products.Name;
-                data.Price = products.Price;
-                data.Category = products.Category;
-                data.CreatedTime = products.CreatedTime;
-                return data;
-
-            }
-            return null;
+            throw new NotImplementedException();
         }
 
-        public Products UpdateproductPrice(Products product)
+        public Products Read(Products product)
         {
-            var data = Products.FirstOrDefault(x => x.Id == product.Id);
-            if (data != null)
-            {
-                data.Price = product.Price;
-                return data;
-            }
-            return null;
+            throw new NotImplementedException();
         }
     }
 }
