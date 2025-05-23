@@ -12,8 +12,8 @@ namespace NoutShop.Services.Interfaces
         public string Create(Products products);
         public IEnumerable<Products> GetAll();
          public Products Update(Products products);
-        public Products Read(Products product);
-        public bool Delete(int idproduct);
+        public List<Products> Read();
+        public void Delete(int productid);
         public Products GetByID(int idproduct);
 
     }
